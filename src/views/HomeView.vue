@@ -1,7 +1,7 @@
 <template>
   <div class="home">
     <img alt="Vue logo" src="../assets/logo.png" />
-    <HelloWorld msg="Welcome to Your Vue.js App" />
+    <HelloWorld msg="Welcome to Your Pwa Login Test" />
 
     <router-link to="/login" class="btn btn-primary">Login</router-link>
   </div>
