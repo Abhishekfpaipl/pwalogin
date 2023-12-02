@@ -13,22 +13,26 @@
         <div class="container d-flex flex-column align-items-center justify-content-center col-md-6 bg-light pt-2">
             <p class="fs-5">Login Your Account </p>
 
-            <div class="w-100 p-2 form-floating container">
-                <input type="email" class="form-control" id="floatingInput" placeholder="Email" v-model="Email">
-                <label for="floatingInput" class="text-muted">Enter your Email</label>
-            </div>
+            <form @submit.prevent="sendUser()">
+                <div class="w-100 p-2 form-floating container">
+                    <input type="email" class="form-control" id="floatingInput" placeholder="Email" v-model="Email"
+                        required>
+                    <label for="floatingInput" class="text-muted">Enter your Email</label>
+                </div>
 
-            <div class="w-100 p-2 form-floating container">
-                <input type="password" class="form-control" id="floatingInput" placeholder="Password" v-model="Password">
-                <label for="floatingInput" class="text-muted">Password</label>
-            </div>
+                <div class="w-100 p-2 form-floating container">
+                    <input type="password" class="form-control" id="floatingInput" placeholder="Password" v-model="Password"
+                        required>
+                    <label for="floatingInput" class="text-muted">Password</label>
+                </div>
 
-            <div class="d-flex justify-content-center align-items-center w-100 px-2 mt-2">
-                <button class="btn text-white py-2 fs-5 w-100"
-                    style="padding: 10px 12px !important;background: linear-gradient(113deg, #1FAB89 31%, #28CC9E 97%);">Submit</button>
-            </div>
+                <div class="d-flex justify-content-center align-items-center w-100 px-2 mt-2">
+                    <button type="submit" class="btn text-white py-2 fs-5 w-100"
+                        style="padding: 10px 12px !important;background: linear-gradient(113deg, #1FAB89 31%, #28CC9E 97%);">Submit</button>
+                </div>
+            </form>
 
-            <RouterLink to="/forgot-password-page" style="text-decoration: none;">
+            <!-- <RouterLink to="/forgot-password-page" style="text-decoration: none;">
                 <div class="text-end mt-1">
                     Forgot your password?
                 </div>
@@ -46,12 +50,14 @@
                         Click here for Register
                     </button>
                 </router-link>
-            </div>
+            </div> -->
         </div>
     </div>
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
     data() {
         return {
@@ -61,6 +67,20 @@ export default {
             Password: "",
         };
     },
+    methods: {
+        sendUser() {
+            const data = {
+                email: this.Email,
+                password: this.Password,
+            }
+            axios.post('http://192.168.1.133:8006/api/login', data)
+                .then((response) => {
+                    console.log('data sent', response)
+                }).catch((error) => {
+                    console.log('error', error)
+                })
+        }
+    }
 }
 </script>
 
