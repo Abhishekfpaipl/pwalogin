@@ -76,6 +76,10 @@ export default {
             axios.post('http://192.168.1.133:8006/api/login', data)
                 .then((response) => {
                     console.log('data sent', response)
+                    const token = response.data.token;
+
+                    localStorage.setItem('token', token);
+                    console.log('login succesful token stored', token)
                 }).catch((error) => {
                     console.log('error', error)
                 })
