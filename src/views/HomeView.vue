@@ -46,7 +46,7 @@ export default {
   mounted() {
     const token = localStorage.getItem('token');
 
-    axios.get('http://192.168.1.133:8006/api/user', { 
+    axios.get('https://pwa.clobug.co.in/api/user', { 
       headers: {"Authorization" : `Bearer ${token}`} }).then((response) => {
         console.log(response.data)
         this.users = response.data.data

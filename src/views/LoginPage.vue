@@ -70,7 +70,7 @@ export default {
     },
     methods: {
         loginAccount() {
-            axios.post('http://192.168.1.133:8006/api/login', {
+            axios.post('https://pwa.clobug.co.in/api/login', {
                 email: this.email,
                 password: this.password
             }).then((response) => {
