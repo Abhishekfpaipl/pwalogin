@@ -12,13 +12,17 @@
     <HelloWorld msg="Welcome to Your Pwa Login Test" />
 
     <router-link to="/login" class="btn btn-primary">Login</router-link>
+
+    {{ users }}
+
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import axios from 'axios';
 import HelloWorld from "@/components/HelloWorld.vue";
-
+// import axiosInstance from "@/axios";
 export default {
   name: "HomeView",
   components: {
@@ -29,7 +33,8 @@ export default {
       deferredPrompt: null,
       showInstallButton: false,
       showInstallPopup: false,
-      noti: []
+      noti: [],
+      users: null,
     };
   },
   created() {
@@ -38,9 +43,20 @@ export default {
   unmounted() {
     window.removeEventListener('beforeinstallprompt', this.handleInstallPrompt);
   },
+  mounted() {
+    const token = localStorage.getItem('token');
+
+    axios.get('http://192.168.1.133:8006/api/user', { 
+      headers: {"Authorization" : `Bearer ${token}`} }).then((response) => {
+        console.log(response.data)
+        this.users = response.data.data
+      })
+      .catch((error) => {
+        console.error(error)
+      })
+  },
   methods: {
     handleInstallPrompt(event) {
-
       // Prevent the default behavior to show the browser's install prompt
       event.preventDefault();
 

@@ -13,15 +13,15 @@
         <div class="container d-flex flex-column align-items-center justify-content-center col-md-6 bg-light pt-2">
             <p class="fs-5">Login Your Account </p>
 
-            <form @submit.prevent="sendUser()">
+            <form @submit.prevent="loginAccount()">
                 <div class="w-100 p-2 form-floating container">
-                    <input type="email" class="form-control" id="floatingInput" placeholder="Email" v-model="Email"
+                    <input type="email" class="form-control" id="floatingInput" placeholder="Email" v-model="email"
                         required>
                     <label for="floatingInput" class="text-muted">Enter your Email</label>
                 </div>
 
                 <div class="w-100 p-2 form-floating container">
-                    <input type="password" class="form-control" id="floatingInput" placeholder="Password" v-model="Password"
+                    <input type="password" class="form-control" id="floatingInput" placeholder="Password" v-model="password"
                         required>
                     <label for="floatingInput" class="text-muted">Password</label>
                 </div>
@@ -63,28 +63,26 @@ export default {
         return {
             logo: "img/fablogo.png",
             publicPath: process.env.BASE_URL,
-            Email: "",
-            Password: "",
+            email: "santosh@gmail.com",
+            password: "123456789",
+            users: null,
         };
     },
     methods: {
-        sendUser() {
-            const data = {
-                email: this.Email,
-                password: this.Password,
-            }
-            axios.post('http://192.168.1.133:8006/api/login', data)
-                .then((response) => {
-                    console.log('data sent', response)
-                    const token = response.data.token;
-
-                    localStorage.setItem('token', token);
-                    console.log('login succesful token stored', token)
-                }).catch((error) => {
-                    console.log('error', error)
-                })
+        loginAccount() {
+            axios.post('http://192.168.1.133:8006/api/login', {
+                email: this.email,
+                password: this.password
+            }).then((response) => {
+                console.log('data sent', response)
+                const token = response.data.token;
+                localStorage.setItem('token', token);
+                console.log('login succesful token stored', token)
+            }).catch((error) => {
+                console.log('error', error)
+            })
         }
-    }
+    },
 }
 </script>
 
