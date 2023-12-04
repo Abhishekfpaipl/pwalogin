@@ -48,8 +48,8 @@ export default {
 
     axios.get('https://pwa.clobug.co.in/api/user', { 
       headers: {"Authorization" : `Bearer ${token}`} }).then((response) => {
+        this.users = response.data
         console.log(response.data)
-        this.users = response.data.data
       })
       .catch((error) => {
         console.error(error)
@@ -58,11 +58,9 @@ export default {
   methods: {
     handleInstallPrompt(event) {
       // Prevent the default behavior to show the browser's install prompt
-      event.preventDefault();
-
+      event.preventDefault(); 
       // Store the event for later use
-      this.deferredPrompt = event;
-
+      this.deferredPrompt = event; 
       // Show a browser-style alert immediately
       this.showInstallAlert();
     },
@@ -80,11 +78,9 @@ export default {
           console.log('User accepted the install prompt');
         } else {
           console.log('User dismissed the install prompt');
-        }
-
+        } 
         // Reset the deferredPrompt
-        this.deferredPrompt = null;
-
+        this.deferredPrompt = null; 
         // Close the install popup
         this.showInstallPopup = false;
       });
