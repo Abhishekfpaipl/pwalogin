@@ -28,27 +28,28 @@ register(`${process.env.BASE_URL}service-worker.js`, {
               }).catch(error => {
                 console.error('Error subscribing to push notifications:', error);
               });
-            }
+            };
+            self.addEventListener('push', function (e) {
+              if (!(self.Notification && self.Notification.permission === 'granted')) {
+                //notifications aren't supported or permission not granted!
+                return;
+              }
+
+              if (e.data) {
+                var msg = e.data.json();
+                console.log(msg)
+                e.waitUntil(self.registration.showNotification(msg.title, {
+                  body: msg.body,
+                  icon: msg.icon,
+                  actions: msg.actions
+                }));
+              }
+            });
           });
         }
       });
     }
-    self.addEventListener('push', function (e) {
-      if (!(self.Notification && self.Notification.permission === 'granted')) {
-        //notifications aren't supported or permission not granted!
-        return;
-      }
 
-      if (e.data) {
-        var msg = e.data.json();
-        console.log(msg)
-        e.waitUntil(self.registration.showNotification(msg.title, {
-          body: msg.body,
-          icon: msg.icon,
-          actions: msg.actions
-        }));
-      }
-    });
 
   },
   cached() {
