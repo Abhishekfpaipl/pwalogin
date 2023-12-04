@@ -29,7 +29,7 @@ register(`${process.env.BASE_URL}service-worker.js`, {
                 actions: msg.actions
               }));
             }
-          });
+          })
         }
       })
     })
@@ -52,7 +52,7 @@ register(`${process.env.BASE_URL}service-worker.js`, {
               }).catch(error => {
                 console.error('Error subscribing to push notifications:', error);
               });
-            };
+            }
 
           });
         }
