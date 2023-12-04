@@ -15,18 +15,25 @@ register(`${process.env.BASE_URL}service-worker.js`, {
     if ('Notification' in window) {
       Notification.requestPermission().then(permission => {
         if (permission === 'granted') {
-          // Permission granted, you can now subscribe to push notifications
-          // Register for push notifications
-          registration.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: 'BPvsZxtTAX46GX6ZsS4CKHq0gQM5w7ow-EtXVziZzOPdXtJjG-77HcYvejfJOUbw1yNv3iwNnEPUrgC8sivKWH4', // Replace with your server key
-          }).then(function (subscription) {
-            console.log('Push subscription successful:', subscription);
-
+          registration.pushManager.getSubscription().then(existingSubscription => {
+            if (existingSubscription) {
+              console.log('User is already subscribed to push notifications:', existingSubscription);
+            } else {
+              // User is not subscribed; register for push notifications
+              registration.pushManager.subscribe({
+                userVisibleOnly: true,
+                applicationServerKey: 'BPvsZxtTAX46GX6ZsS4CKHq0gQM5w7ow-EtXVziZzOPdXtJjG-77HcYvejfJOUbw1yNv3iwNnEPUrgC8sivKWH4', // Replace with your server key
+              }).then(newSubscription => {
+                console.log('Push subscription successful:', newSubscription);
+              }).catch(error => {
+                console.error('Error subscribing to push notifications:', error);
+              });
+            }
           });
         }
       });
     }
+
 
   },
   cached() {
