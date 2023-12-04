@@ -9,6 +9,30 @@ register(`${process.env.BASE_URL}service-worker.js`, {
       "App is being served from cache by a service worker.\n" +
       "For more details, visit https://goo.gl/AFskqB"
     );
+    navigator.serviceWorker.ready.then(reg => {
+      reg.pushManager.getSubscription().then(sub => {
+        if (sub === undefined) {
+          return
+        } else {
+          self.addEventListener('push', function (e) {
+            if (!(self.Notification && self.Notification.permission === 'granted')) {
+              //notifications aren't supported or permission not granted!
+              return;
+            }
+
+            if (e.data) {
+              var msg = e.data.json();
+              console.log(msg)
+              e.waitUntil(self.registration.showNotification(msg.title, {
+                body: msg.body,
+                icon: msg.icon,
+                actions: msg.actions
+              }));
+            }
+          });
+        }
+      })
+    })
   },
   registered(registration) {
     console.log("Service worker has been registered.");
@@ -29,22 +53,7 @@ register(`${process.env.BASE_URL}service-worker.js`, {
                 console.error('Error subscribing to push notifications:', error);
               });
             };
-            self.addEventListener('push', function (e) {
-              if (!(self.Notification && self.Notification.permission === 'granted')) {
-                //notifications aren't supported or permission not granted!
-                return;
-              }
 
-              if (e.data) {
-                var msg = e.data.json();
-                console.log(msg)
-                e.waitUntil(self.registration.showNotification(msg.title, {
-                  body: msg.body,
-                  icon: msg.icon,
-                  actions: msg.actions
-                }));
-              }
-            });
           });
         }
       });
