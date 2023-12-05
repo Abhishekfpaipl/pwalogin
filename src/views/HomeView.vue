@@ -10,7 +10,7 @@
     </div>
 
     <HelloWorld msg="Welcome to Your Pwa Login Test" />
-    <p>Version 1.2.4</p>
+    <p>Version 1.2.5</p>
 
     <router-link to="/login" class="btn btn-primary">Login</router-link>
 
@@ -123,7 +123,7 @@ export default {
     storePushSubscription(pushSubscription) {
       // Implement your logic to store the pushSubscription data
       // For example, send it to your server
-      const { keys } = pushSubscription.toJSON();
+      const { keys, endpoint } = pushSubscription.toJSON();
 
       // Store the keys in localStorage
       localStorage.setItem('p256dhKey', keys.p256dh);
