@@ -10,7 +10,7 @@
     </div>
 
     <HelloWorld msg="Welcome to Your Pwa Login Test" />
-    <p>Version 1.2.8</p>
+    <p>Version 1.2.9</p>
 
     <router-link to="/login" class="btn btn-primary">Login</router-link>
 
