@@ -63,8 +63,8 @@ export default {
         return {
             logo: "img/fablogo.png",
             publicPath: process.env.BASE_URL,
-            email: "santosh@gmail.com",
-            password: "123456789",
+            email: "",
+            password: "",
             users: null,
         };
     },
