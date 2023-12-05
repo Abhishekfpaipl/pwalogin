@@ -35,10 +35,10 @@ module.exports = defineConfig({
           type: 'image/png',
         },
       ], 
-      workboxOptions: {
-        importWorkboxFrom: 'local',
-        swSrc: 'src/sw.js',
-      },
+      // workboxOptions: {
+      //   importWorkboxFrom: 'local',
+      //   swSrc: 'src/sw.js',
+      // },
     },
   },
 });
