@@ -12,9 +12,12 @@ register(`${process.env.BASE_URL}service-worker.js`, {
     navigator.serviceWorker.ready.then(reg => {
       reg.pushManager.getSubscription().then(sub => {
         if (sub === undefined) {
+          console.log('test');
           return
         } else {
+          console.log('inside else')
           self.addEventListener('push', function (e) {
+            console.log('inside')
             if (!(self.Notification && self.Notification.permission === 'granted')) {
               //notifications aren't supported or permission not granted!
               return;
