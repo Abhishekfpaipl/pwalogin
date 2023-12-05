@@ -10,7 +10,7 @@
     </div>
 
     <HelloWorld msg="Welcome to Your Pwa Login Test" />
-    <p>Version 1.2.5</p>
+    <p>Version 1.2.6</p>
 
     <router-link to="/login" class="btn btn-primary">Login</router-link>
 
@@ -133,24 +133,49 @@ export default {
       console.log('Stored p256dhKey in localStorage:', keys.p256dh);
       console.log('Stored authKey in localStorage:', keys.auth);
     },
+    // getNoti() {
+    //   const token = localStorage.getItem('token');
+    //   const keys = {
+    //     "auth": localStorage.getItem('authKey'),
+    //     "p256dh": localStorage.getItem('p256dhKey')
+    //   }
+
+    //   axios.post('https://pwa.clobug.co.in/api/push_store', {
+    //     headers: { "Authorization": `Bearer ${token}` },
+    //     endpoint: localStorage.getItem('endpoint'), keys
+    //   })
+    //     .then((response) => {
+    //       console.log('data sent', response)
+    //     })
+    //     .catch((error) => {
+    //       console.error('error sending data', error)
+    //     })
+    // }
     getNoti() {
       const token = localStorage.getItem('token');
       const keys = {
         "auth": localStorage.getItem('authKey'),
         "p256dh": localStorage.getItem('p256dhKey')
-      }
+      };
 
-      axios.post('https://pwa.clobug.co.in/api/push_store', {
-        headers: { "Authorization": `Bearer ${token}` },
-        endpoint: localStorage.getItem('endpoint'), keys
-      })
+      const data = {
+        endpoint: localStorage.getItem('endpoint'),
+        keys
+      };
+
+      const config = {
+        headers: { "Authorization": `Bearer ${token}` }
+      };
+
+      axios.post('https://pwa.clobug.co.in/api/push_store', data, config)
         .then((response) => {
-          console.log('data sent', response)
+          console.log('data sent', response);
         })
         .catch((error) => {
-          console.error('error sending data', error)
-        })
+          console.error('error sending data', error);
+        });
     }
+
   },
 };
 </script>
