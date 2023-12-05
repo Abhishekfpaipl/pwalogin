@@ -3,7 +3,7 @@
 import { register } from "register-service-worker";
 
 // if (process.env.NODE_ENV === "production") {
-  console.log(`${process.env.BASE_URL}`)
+console.log(`${process.env.BASE_URL}`)
 register(`${process.env.BASE_URL}sw.js`, {
   ready() {
     console.log(
@@ -35,7 +35,9 @@ register(`${process.env.BASE_URL}sw.js`, {
               // User is not subscribed; register for push notifications
               registration.pushManager.subscribe({
                 userVisibleOnly: true,
-                applicationServerKey: 'BPvsZxtTAX46GX6ZsS4CKHq0gQM5w7ow-EtXVziZzOPdXtJjG-77HcYvejfJOUbw1yNv3iwNnEPUrgC8sivKWH4', // Replace with your server key
+                applicationServerKey: urlBase64ToUint8Array(
+                  'BPvsZxtTAX46GX6ZsS4CKHq0gQM5w7ow-EtXVziZzOPdXtJjG-77HcYvejfJOUbw1yNv3iwNnEPUrgC8sivKWH4'
+                )
               }).then(function (newSubscription) {
                 console.log('Push subscription successful:', newSubscription);
                 // localStorage.setItem('pushEndpoint', newSubscription.endpoint)
@@ -70,3 +72,17 @@ register(`${process.env.BASE_URL}sw.js`, {
     console.error("Error during service worker registration:", error);
   },
 });
+function urlBase64ToUint8Array(base64String) {
+  var padding = '='.repeat((4 - base64String.length % 4) % 4);
+  var base64 = (base64String + padding)
+    .replace(/-/g, '+')
+    .replace(/_/g, '/');
+
+  var rawData = window.atob(base64);
+  var outputArray = new Uint8Array(rawData.length);
+
+  for (var i = 0; i < rawData.length; ++i) {
+    outputArray[i] = rawData.charCodeAt(i);
+  }
+  return outputArray;
+}
