@@ -42,13 +42,15 @@ register(`${process.env.BASE_URL}service-worker.js`, {
           registration.pushManager.getSubscription().then(existingSubscription => {
             if (existingSubscription) {
               console.log('User is already subscribed to push notifications:', existingSubscription);
+              localStorage.setItem('pushEndpoint', existingSubscription.endpoint)
             } else {
               // User is not subscribed; register for push notifications
               registration.pushManager.subscribe({
                 userVisibleOnly: true,
                 applicationServerKey: 'BPvsZxtTAX46GX6ZsS4CKHq0gQM5w7ow-EtXVziZzOPdXtJjG-77HcYvejfJOUbw1yNv3iwNnEPUrgC8sivKWH4', // Replace with your server key
-              }).then(newSubscription => {
+              }).then(function (newSubscription) {
                 console.log('Push subscription successful:', newSubscription);
+                localStorage.setItem('pushEndpoint', newSubscription.endpoint)
               }).catch(error => {
                 console.error('Error subscribing to push notifications:', error);
               });
@@ -79,15 +81,3 @@ register(`${process.env.BASE_URL}service-worker.js`, {
     console.error("Error during service worker registration:", error);
   },
 });
-// self.addEventListener('push', event => {
-//   const options = {
-//     body: event.data.text(),
-//     // Add more options as needed
-//   };
-
-//   event.waitUntil(
-//     self.registration.showNotification('PwaLogin', options)
-//   );
-// });
-
-// }

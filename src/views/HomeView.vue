@@ -10,11 +10,16 @@
     </div>
 
     <HelloWorld msg="Welcome to Your Pwa Login Test" />
-    <p>Version 1.2.1</p>
+    <p>Version 1.2.2</p>
 
     <router-link to="/login" class="btn btn-primary">Login</router-link>
 
     {{ users }}
+
+    <button @click="subscribeForNotifications">Subscribe for Notifications</button>
+    <button @click="storePushSubscription">Store data</button>
+
+    <button @click="getNoti">Test</button>
 
   </div>
 </template>
@@ -47,11 +52,12 @@ export default {
   mounted() {
     const token = localStorage.getItem('token');
 
-    axios.get('https://pwa.clobug.co.in/api/user', { 
-      headers: {"Authorization" : `Bearer ${token}`} }).then((response) => {
-        this.users = response.data
-        console.log(response.data)
-      })
+    axios.get('https://pwa.clobug.co.in/api/user', {
+      headers: { "Authorization": `Bearer ${token}` }
+    }).then((response) => {
+      this.users = response.data
+      console.log(response.data)
+    })
       .catch((error) => {
         console.error(error)
       })
@@ -59,9 +65,9 @@ export default {
   methods: {
     handleInstallPrompt(event) {
       // Prevent the default behavior to show the browser's install prompt
-      event.preventDefault(); 
+      event.preventDefault();
       // Store the event for later use
-      this.deferredPrompt = event; 
+      this.deferredPrompt = event;
       // Show a browser-style alert immediately
       this.showInstallAlert();
     },
@@ -79,9 +85,9 @@ export default {
           console.log('User accepted the install prompt');
         } else {
           console.log('User dismissed the install prompt');
-        } 
+        }
         // Reset the deferredPrompt
-        this.deferredPrompt = null; 
+        this.deferredPrompt = null;
         // Close the install popup
         this.showInstallPopup = false;
       });
@@ -89,6 +95,58 @@ export default {
     dismissInstall() {
       this.showInstallPopup = false;
     },
+    subscribeForNotifications() {
+      if ('serviceWorker' in navigator && 'PushManager' in window) {
+        navigator.serviceWorker.ready
+          .then((registration) => {
+            const subscribeOptions = {
+              userVisibleOnly: true,
+              applicationServerKey: 'BPvsZxtTAX46GX6ZsS4CKHq0gQM5w7ow-EtXVziZzOPdXtJjG-77HcYvejfJOUbw1yNv3iwNnEPUrgC8sivKWH4'
+            };
+
+            return registration.pushManager.subscribe(subscribeOptions);
+          })
+          .then((pushSubscription) => {
+            console.log('Received PushSubscription: ', JSON.stringify(pushSubscription));
+            // You can store the pushSubscription data as needed
+            this.storePushSubscription(pushSubscription);
+            localStorage.setItem('p256dhKey', pushSubscription.keys.p256dh);
+            localStorage.setItem('authKey', pushSubscription.keys.auth);
+          })
+          .catch((error) => {
+            console.error('Error subscribing for notifications:', error);
+          });
+      } else {
+        console.warn('Push notifications are not supported in this browser.');
+      }
+    },
+    storePushSubscription(pushSubscription) {
+      // Implement your logic to store the pushSubscription data
+      // For example, send it to your server
+      const { keys } = pushSubscription.toJSON();
+
+      // Store the keys in localStorage
+      localStorage.setItem('p256dhKey', keys.p256dh);
+      localStorage.setItem('authKey', keys.auth);
+
+      console.log('Stored p256dhKey in localStorage:', keys.p256dh);
+      console.log('Stored authKey in localStorage:', keys.auth);
+    },
+    getNoti() {
+      const keys = {
+        "auth": localStorage.getItem('authKey'),
+        "p256dh": localStorage.getItem('p256dhKey')
+      }
+      axios.post('https://pwa.clobug.co.in/api/push_store', {
+        endpoint: localStorage.getItem('pushEndpoint'), keys
+      })
+        .then((response) => {
+          console.log('data sent', response)
+        })
+        .catch((error) => {
+          console.error('error sending data', error)
+        })
+    }
   },
 };
 </script>
