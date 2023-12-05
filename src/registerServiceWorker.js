@@ -42,7 +42,7 @@ register(`${process.env.BASE_URL}service-worker.js`, {
           registration.pushManager.getSubscription().then(existingSubscription => {
             if (existingSubscription) {
               console.log('User is already subscribed to push notifications:', existingSubscription);
-              localStorage.setItem('pushEndpoint', existingSubscription.endpoint)
+              // localStorage.setItem('pushEndpoint', existingSubscription.endpoint)
             } else {
               // User is not subscribed; register for push notifications
               registration.pushManager.subscribe({
@@ -50,7 +50,7 @@ register(`${process.env.BASE_URL}service-worker.js`, {
                 applicationServerKey: 'BPvsZxtTAX46GX6ZsS4CKHq0gQM5w7ow-EtXVziZzOPdXtJjG-77HcYvejfJOUbw1yNv3iwNnEPUrgC8sivKWH4', // Replace with your server key
               }).then(function (newSubscription) {
                 console.log('Push subscription successful:', newSubscription);
-                localStorage.setItem('pushEndpoint', newSubscription.endpoint)
+                // localStorage.setItem('pushEndpoint', newSubscription.endpoint)
               }).catch(error => {
                 console.error('Error subscribing to push notifications:', error);
               });

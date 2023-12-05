@@ -10,14 +10,14 @@
     </div>
 
     <HelloWorld msg="Welcome to Your Pwa Login Test" />
-    <p>Version 1.2.2</p>
+    <p>Version 1.2.3</p>
 
     <router-link to="/login" class="btn btn-primary">Login</router-link>
 
     {{ users }}
 
     <button @click="subscribeForNotifications">Subscribe for Notifications</button>
-    <button @click="storePushSubscription">Store data</button>
+    <!-- <button @click="storePushSubscription">Store data</button> -->
 
     <button @click="getNoti">Test</button>
 
@@ -128,6 +128,7 @@ export default {
       // Store the keys in localStorage
       localStorage.setItem('p256dhKey', keys.p256dh);
       localStorage.setItem('authKey', keys.auth);
+      localStorage.setItem('endpoint', keys.endpoint)
 
       console.log('Stored p256dhKey in localStorage:', keys.p256dh);
       console.log('Stored authKey in localStorage:', keys.auth);
@@ -141,7 +142,7 @@ export default {
 
       axios.post('https://pwa.clobug.co.in/api/push_store', {
         headers: { "Authorization": `Bearer ${token}` },
-        endpoint: localStorage.getItem('pushEndpoint'), keys
+        endpoint: localStorage.getItem('endpoint'), keys
       })
         .then((response) => {
           console.log('data sent', response)
