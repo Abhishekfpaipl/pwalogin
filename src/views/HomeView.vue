@@ -133,11 +133,14 @@ export default {
       console.log('Stored authKey in localStorage:', keys.auth);
     },
     getNoti() {
+      const token = localStorage.getItem('token');
       const keys = {
         "auth": localStorage.getItem('authKey'),
         "p256dh": localStorage.getItem('p256dhKey')
       }
+
       axios.post('https://pwa.clobug.co.in/api/push_store', {
+        headers: { "Authorization": `Bearer ${token}` },
         endpoint: localStorage.getItem('pushEndpoint'), keys
       })
         .then((response) => {
