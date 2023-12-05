@@ -13,6 +13,7 @@
     <p>Version 1.3.2</p>
 
     <router-link to="/login" class="btn btn-primary">Login</router-link>
+    <router-link to="/registration" class="btn btn-primary">Register</router-link>
 
     {{ users }}
 

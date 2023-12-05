@@ -3,39 +3,23 @@
 import { register } from "register-service-worker";
 
 // if (process.env.NODE_ENV === "production") {
-register(`${process.env.BASE_URL}service-worker.js`, {
+register(`${process.env.BASE_URL}sw.js`, {
   ready() {
     console.log(
       "App is being served from cache by a service worker.\n" +
       "For more details, visit https://goo.gl/AFskqB"
     );
-    navigator.serviceWorker.ready.then(reg => {
-      reg.pushManager.getSubscription().then(sub => {
-        if (sub === undefined) {
-          console.log('test');
-          return
-        } else {
-          console.log('inside else')
-          self.addEventListener('push', function (e) {
-            console.log('inside')
-            if (!(self.Notification && self.Notification.permission === 'granted')) {
-              //notifications aren't supported or permission not granted!
-              return;
-            }
+    // navigator.serviceWorker.ready.then(reg => {
+    //   reg.pushManager.getSubscription().then(sub => {
+    //     if (sub === undefined) {
+    //       console.log('test');
+    //       return
+    //     } else {
+    //       console.log('inside else')
 
-            if (e.data) {
-              var msg = e.data.json();
-              console.log(msg)
-              e.waitUntil(self.registration.showNotification(msg.title, {
-                body: msg.body,
-                icon: msg.icon,
-                actions: msg.actions
-              }));
-            }
-          })
-        }
-      })
-    })
+    //     }
+    //   })
+    // })
   },
   registered(registration) {
     console.log("Service worker has been registered.");
@@ -45,6 +29,24 @@ register(`${process.env.BASE_URL}service-worker.js`, {
           registration.pushManager.getSubscription().then(existingSubscription => {
             if (existingSubscription) {
               console.log('User is already subscribed to push notifications:', existingSubscription);
+              self.addEventListener('push', function (e) {
+                console.log('inside')
+                if (!(self.Notification && self.Notification.permission === 'granted')) {
+                  //notifications aren't supported or permission not granted!
+                  return;
+                }
+
+                if (e.data) {
+                  var msg = e.data.json();
+                  console.log(msg)
+                  e.waitUntil(self.registration.showNotification(msg.title, {
+                    body: msg.body,
+                    icon: msg.icon,
+                    actions: msg.actions
+                  }));
+                }
+              })
+
               // localStorage.setItem('pushEndpoint', existingSubscription.endpoint)
             } else {
               // User is not subscribed; register for push notifications
@@ -54,7 +56,7 @@ register(`${process.env.BASE_URL}service-worker.js`, {
               }).then(function (newSubscription) {
                 console.log('Push subscription successful:', newSubscription);
                 // localStorage.setItem('pushEndpoint', newSubscription.endpoint)
- 
+
               }).catch(error => {
                 console.error('Error subscribing to push notifications:', error);
               });
