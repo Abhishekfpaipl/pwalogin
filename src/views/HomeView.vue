@@ -10,7 +10,7 @@
     </div>
 
     <HelloWorld msg="Welcome to Your Pwa Login Test" />
-    <p>Version 1.2.3</p>
+    <p>Version 1.2.4</p>
 
     <router-link to="/login" class="btn btn-primary">Login</router-link>
 
@@ -128,7 +128,7 @@ export default {
       // Store the keys in localStorage
       localStorage.setItem('p256dhKey', keys.p256dh);
       localStorage.setItem('authKey', keys.auth);
-      localStorage.setItem('endpoint', keys.endpoint)
+      localStorage.setItem('endpoint', endpoint)
 
       console.log('Stored p256dhKey in localStorage:', keys.p256dh);
       console.log('Stored authKey in localStorage:', keys.auth);
