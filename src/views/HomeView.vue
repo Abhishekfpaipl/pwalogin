@@ -21,7 +21,7 @@
     <!-- <button @click="storePushSubscription">Store data</button> -->
 
     <button @click="getNoti">Test</button>
-
+    <button @click="pwaRedirect">Yes, switch to PWA</button>
   </div>
 </template>
 
@@ -64,6 +64,19 @@ export default {
       })
   },
   methods: {
+    pwaRedirect() {
+      const manifestURL = '/manifest.json';
+      window.addEventListener('load', async () => {
+        const isStandalone = window.matchMedia('(display-mode: standalone)').matches;
+        const manifest = await window.fetch(manifestURL).then(response => response.json());
+        const startURL = new URL(manifest.start_url, window.location.origin).href;
+
+        // If the PWA is installed and the current URL is not the start URL, redirect the user
+        if (isStandalone && window.location.href !== startURL) {
+          window.location.href = startURL;
+        }
+      });
+    },
     handleInstallPrompt(event) {
       // Prevent the default behavior to show the browser's install prompt
       event.preventDefault();
