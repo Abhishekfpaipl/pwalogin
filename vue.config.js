@@ -34,7 +34,7 @@ module.exports = defineConfig({
           sizes: '192x192',
           type: 'image/png',
         },
-      ], 
+      ],
       // workboxOptions: {
       //   importWorkboxFrom: 'local',
       //   swSrc: 'src/sw.js',
@@ -42,3 +42,4 @@ module.exports = defineConfig({
     },
   },
 });
+
