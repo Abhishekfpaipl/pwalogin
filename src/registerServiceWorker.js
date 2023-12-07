@@ -36,9 +36,7 @@ register(`${process.env.BASE_URL}sw.js`, {
               // User is not subscribed; register for push notifications
               registration.pushManager.subscribe({
                 userVisibleOnly: true,
-                applicationServerKey: urlBase64ToUint8Array(
-                  'BPvsZxtTAX46GX6ZsS4CKHq0gQM5w7ow-EtXVziZzOPdXtJjG-77HcYvejfJOUbw1yNv3iwNnEPUrgC8sivKWH4'
-                )
+                applicationServerKey:'BHaGoupz6SaaiUM6EOTtsVSVjAklaOV3Y4lmexYmEV7XwDDiA4LkPLfqmvpaF4FcyyHEZ2LvLQUp9sHpuW0K96s'
               }).then(function (newSubscription) {
                 console.log('Push subscription successful:', newSubscription);
                 // localStorage.setItem('pushEndpoint', newSubscription.endpoint)
