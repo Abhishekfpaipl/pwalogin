@@ -30,17 +30,21 @@ register(`${process.env.BASE_URL}sw.js`, {
           registration.pushManager.getSubscription().then(existingSubscription => {
             if (existingSubscription) {
               console.log('User is already subscribed to push notifications:', existingSubscription);
-              
+              localStorage.setItem('p256dhKey', existingSubscription.keys.p256dh);
+              localStorage.setItem('endpoint', existingSubscription.endpoint);
+              localStorage.setItem('authKey', existingSubscription.keys.auth);
               // localStorage.setItem('pushEndpoint', existingSubscription.endpoint)
             } else {
               // User is not subscribed; register for push notifications
               registration.pushManager.subscribe({
                 userVisibleOnly: true,
-                applicationServerKey:'BHaGoupz6SaaiUM6EOTtsVSVjAklaOV3Y4lmexYmEV7XwDDiA4LkPLfqmvpaF4FcyyHEZ2LvLQUp9sHpuW0K96s'
+                applicationServerKey: 'BHaGoupz6SaaiUM6EOTtsVSVjAklaOV3Y4lmexYmEV7XwDDiA4LkPLfqmvpaF4FcyyHEZ2LvLQUp9sHpuW0K96s'
               }).then(function (newSubscription) {
                 console.log('Push subscription successful:', newSubscription);
                 // localStorage.setItem('pushEndpoint', newSubscription.endpoint)
-
+                localStorage.setItem('p256dhKey', newSubscription.keys.p256dh);
+                localStorage.setItem('endpoint', newSubscription.endpoint);
+                localStorage.setItem('authKey', newSubscription.keys.auth);
               }).catch(error => {
                 console.error('Error subscribing to push notifications:', error);
               });
@@ -71,4 +75,3 @@ register(`${process.env.BASE_URL}sw.js`, {
     console.error("Error during service worker registration:", error);
   },
 });
- 
