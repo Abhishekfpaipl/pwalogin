@@ -115,80 +115,84 @@ export default {
           .then((registration) => {
             const subscribeOptions = {
               userVisibleOnly: true,
-              applicationServerKey: 'BPvsZxtTAX46GX6ZsS4CKHq0gQM5w7ow-EtXVziZzOPdXtJjG-77HcYvejfJOUbw1yNv3iwNnEPUrgC8sivKWH4'
-            };
+              applicationServerKey:"BHaGoupz6SaaiUM6EOTtsVSVjAklaOV3Y4lmexYmEV7XwDDiA4LkPLfqmvpaF4FcyyHEZ2LvLQUp9sHpuW0K96s" 
+              // 'BPvsZxtTAX46GX6ZsS4CKHq0gQM5w7ow-EtXVziZzOPdXtJjG-77HcYvejfJOUbw1yNv3iwNnEPUrgC8sivKWH4'
+              // VAPID_PUBLIC_KEY=BHaGoupz6SaaiUM6EOTtsVSVjAklaOV3Y4lmexYmEV7XwDDiA4LkPLfqmvpaF4FcyyHEZ2LvLQUp9sHpuW0K96s
+// VAPID_PRIVATE_KEY=8bhCFK8z4tcmX2t5hkwC0Av7_KFZWgoZYCrc3- 6DjOo
 
-            return registration.pushManager.subscribe(subscribeOptions);
-          })
+          };
+
+        return registration.pushManager.subscribe(subscribeOptions);
+      })
           .then((pushSubscription) => {
-            console.log('Received PushSubscription: ', JSON.stringify(pushSubscription));
-            // You can store the pushSubscription data as needed
-            this.storePushSubscription(pushSubscription);
-            localStorage.setItem('p256dhKey', pushSubscription.keys.p256dh);
-            localStorage.setItem('authKey', pushSubscription.keys.auth);
-          })
-          .catch((error) => {
-            console.error('Error subscribing for notifications:', error);
-          });
-      } else {
-        console.warn('Push notifications are not supported in this browser.');
-      }
-    },
-    storePushSubscription(pushSubscription) {
-      // Implement your logic to store the pushSubscription data
-      // For example, send it to your server
-      const { keys, endpoint } = pushSubscription.toJSON();
+        console.log('Received PushSubscription: ', JSON.stringify(pushSubscription));
+        // You can store the pushSubscription data as needed
+        this.storePushSubscription(pushSubscription);
+        localStorage.setItem('p256dhKey', pushSubscription.keys.p256dh);
+        localStorage.setItem('authKey', pushSubscription.keys.auth);
+      })
+      .catch((error) => {
+        console.error('Error subscribing for notifications:', error);
+      });
+  } else {
+    console.warn('Push notifications are not supported in this browser.');
+  }
+},
+storePushSubscription(pushSubscription) {
+  // Implement your logic to store the pushSubscription data
+  // For example, send it to your server
+  const { keys, endpoint } = pushSubscription.toJSON();
 
-      // Store the keys in localStorage
-      localStorage.setItem('p256dhKey', keys.p256dh);
-      localStorage.setItem('authKey', keys.auth);
-      localStorage.setItem('endpoint', endpoint)
+  // Store the keys in localStorage
+  localStorage.setItem('p256dhKey', keys.p256dh);
+  localStorage.setItem('authKey', keys.auth);
+  localStorage.setItem('endpoint', endpoint)
 
-      console.log('Stored p256dhKey in localStorage:', keys.p256dh);
-      console.log('Stored authKey in localStorage:', keys.auth);
-    },
-    // getNoti() {
-    //   const token = localStorage.getItem('token');
-    //   const keys = {
-    //     "auth": localStorage.getItem('authKey'),
-    //     "p256dh": localStorage.getItem('p256dhKey')
-    //   }
+  console.log('Stored p256dhKey in localStorage:', keys.p256dh);
+  console.log('Stored authKey in localStorage:', keys.auth);
+},
+// getNoti() {
+//   const token = localStorage.getItem('token');
+//   const keys = {
+//     "auth": localStorage.getItem('authKey'),
+//     "p256dh": localStorage.getItem('p256dhKey')
+//   }
 
-    //   axios.post('https://pwa.clobug.co.in/api/push_store', {
-    //     headers: { "Authorization": `Bearer ${token}` },
-    //     endpoint: localStorage.getItem('endpoint'), keys
-    //   })
-    //     .then((response) => {
-    //       console.log('data sent', response)
-    //     })
-    //     .catch((error) => {
-    //       console.error('error sending data', error)
-    //     })
-    // }
-    getNoti() {
-      const token = localStorage.getItem('token');
-      const keys = {
-        "auth": localStorage.getItem('authKey'),
-        "p256dh": localStorage.getItem('p256dhKey')
-      };
+//   axios.post('https://pwa.clobug.co.in/api/push_store', {
+//     headers: { "Authorization": `Bearer ${token}` },
+//     endpoint: localStorage.getItem('endpoint'), keys
+//   })
+//     .then((response) => {
+//       console.log('data sent', response)
+//     })
+//     .catch((error) => {
+//       console.error('error sending data', error)
+//     })
+// }
+getNoti() {
+  const token = localStorage.getItem('token');
+  const keys = {
+    "auth": localStorage.getItem('authKey'),
+    "p256dh": localStorage.getItem('p256dhKey')
+  };
 
-      const data = {
-        endpoint: localStorage.getItem('endpoint'),
-        keys
-      };
+  const data = {
+    endpoint: localStorage.getItem('endpoint'),
+    keys
+  };
 
-      const config = {
-        headers: { "Authorization": `Bearer ${token}` }
-      };
+  const config = {
+    headers: { "Authorization": `Bearer ${token}` }
+  };
 
-      axios.post('https://pwa.clobug.co.in/api/push_store', data, config)
-        .then((response) => {
-          console.log('data sent', response);
-        })
-        .catch((error) => {
-          console.error('error sending data', error);
-        });
-    }
+  axios.post('https://pwa.clobug.co.in/api/push_store', data, config)
+    .then((response) => {
+      console.log('data sent', response);
+    })
+    .catch((error) => {
+      console.error('error sending data', error);
+    });
+}
 
   },
 };

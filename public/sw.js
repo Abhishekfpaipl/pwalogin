@@ -8,21 +8,21 @@ self.addEventListener('push', function (e) {
 
     if (e.data) {
         console.log('resr')
-        //var msg = e.data.json();
-        // console.log(msg)
-        // e.waitUntil(self.registration.showNotification(msg.title, {
-        //     body: msg.body,
-        //     icon: msg.icon,
-        //     actions: msg.actions
-        // }));
-
-        e.waitUntil(self.registration.showNotification('aaaaa', {
-            body: 'bbbbb',
-            icon: '',
-            actions: [
-                { action: 'cccc', title: 'ddddd' }
-            ]
+        var msg = e.data.json();
+        console.log(msg)
+        e.waitUntil(self.registration.showNotification(msg.title, {
+            body: msg.body,
+            icon: msg.icon,
+            actions: msg.actions
         }));
+
+        // e.waitUntil(self.registration.showNotification('aaaaa', {
+        //     body: 'bbbbb',
+        //     icon: '',
+        //     actions: [
+        //         { action: 'https://www.google.com/', title: 'ddddd' }
+        //     ]
+        // }));
     }
 });
 
