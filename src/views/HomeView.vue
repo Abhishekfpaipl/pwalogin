@@ -7,8 +7,7 @@
         <button @click="installApp">Install</button>
         <button @click="dismissInstall">Dismiss</button>
       </div>
-    </div>
-    Abhisheknegi@fpaipl
+    </div> 
     <HelloWorld msg="Welcome to Your Pwa Login Test" />
     <p>Version 1.3.4</p>
 
