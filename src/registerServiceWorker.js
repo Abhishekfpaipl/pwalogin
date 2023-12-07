@@ -29,10 +29,9 @@ register(`${process.env.BASE_URL}sw.js`, {
         if (permission === 'granted') {
           registration.pushManager.getSubscription().then(existingSubscription => {
             if (existingSubscription) {
-              subscription.unsubscribe().then(() => {
+              existingSubscription.unsubscribe().then(() => {
                 console.log('Unsubscribed successfully.');
                 // Now, attempt to subscribe again with the new applicationServerKey
-                subscribeToPushNotifications();
               })
               console.log('User is already subscribed to push notifications:', existingSubscription);
               localStorage.setItem('p256dhKey', existingSubscription.keys.p256dh);
